@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Smart Jadwal SMP Negeri 1 Limau</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--primary:#1769aa;--primary2:#0d8b74;--line:#dfe5ee;--soft:#edf5ff;--danger:#c62828;--shadow:0 8px 24px rgba(20,35,60,.08)}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,#0d5ea8,#087f70);color:white;padding:22px 18px;position:sticky;top:0;z-index:20;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+.wrap{max-width:1250px;margin:auto} h1{margin:0;font-size:clamp(22px,4vw,34px)} .subtitle{opacity:.9;margin-top:5px}
+nav{display:flex;gap:8px;overflow:auto;margin-top:18px} nav button,.btn{border:0;border-radius:10px;padding:10px 14px;background:#ffffff22;color:white;font-weight:700;cursor:pointer;white-space:nowrap} nav button.active,nav button:hover{background:white;color:#0d6790}
+main{max-width:1250px;margin:20px auto;padding:0 14px} .view{display:none} .view.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px} .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow)} .num{font-size:28px;font-weight:800} .label{color:var(--muted);font-size:13px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:15px} input,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:white;color:var(--text);font-size:15px} .search{flex:1;min-width:230px}
+.btn2{background:var(--primary);color:white;border:0;border-radius:11px;padding:11px 14px;font-weight:700;cursor:pointer} .btn2.alt{background:#596579} .btn2.green{background:var(--primary2)} .btn2.red{background:var(--danger)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:18px}
+h2{margin:0 0 12px;font-size:20px} h3{margin:0 0 5px} .hint{color:var(--muted);font-size:13px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px} table{border-collapse:collapse;width:100%;min-width:850px;background:white} th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top} th{background:#f0f5fa;position:sticky;top:0;z-index:2;font-size:13px} tr:hover td{background:#fafcff}
+.badge{display:inline-block;padding:5px 8px;border-radius:8px;background:var(--soft);font-weight:700;color:#125f98;font-size:12px} .empty{padding:30px;text-align:center;color:var(--muted)}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px} .teacher-card{cursor:pointer;transition:.15s} .teacher-card:hover{transform:translateY(-2px);border-color:#9bc7ea} .teacher-card .code{font-size:12px;color:var(--muted)} .teacher-card .subject{font-size:13px;color:var(--primary);margin-top:7px}
+.day-tabs{display:flex;gap:7px;overflow:auto;margin-bottom:14px} .day-tabs button{padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:white;cursor:pointer;font-weight:700} .day-tabs button.active{background:var(--primary);color:white;border-color:var(--primary)}
+.schedule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px} .period{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff} .period-head{display:flex;justify-content:space-between;gap:8px;margin-bottom:9px;font-weight:800} .lesson{border-left:4px solid var(--primary);padding:8px 10px;background:#f8fbff;border-radius:7px;margin:5px 0}
+.kbd{font-family:monospace;background:#eef1f5;padding:2px 6px;border-radius:5px} footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 10px}
+.notice{background:#fff7e6;border:1px solid #f1d59b;padding:12px;border-radius:11px;margin-bottom:15px;font-size:13px}
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.schedule-grid{grid-template-columns:1fr}}
+@media(max-width:500px){.cards{grid-template-columns:1fr 1fr}.card{padding:12px}}
+@media print{header,nav,.toolbar,.day-tabs,.no-print,footer{display:none!important} body{background:white} main{margin:0;padding:0} .view{display:none!important} .view.active{display:block!important} .view.active .panel{display:block!important} .panel.printable{display:block!important;box-shadow:none;border:0} .teacher-card{display:none!important} .table-wrap{overflow:visible!important} table{min-width:0!important;width:100%!important} th{position:static!important}}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<h1>📚 Smart Jadwal SMP Negeri 1 Limau</h1>
+<div class="subtitle">Tahun Ajaran 2026/2027 • Edisi 2 • Pencarian guru & kelas</div>
+<nav>
+<button class="active" data-view="home">Dashboard</button>
+<button data-view="guru">Jadwal Guru</button>
+<button data-view="kelas">Jadwal Kelas</button>
+<button data-view="semua">Semua Jadwal</button>
+<button data-view="cek">Cek Data</button><button data-view="tugas">Pembagian Tugas</button>
+</nav>
+</div>
+</header>
+
+<main>
+<section id="home" class="view active">
+<div class="cards">
+<div class="card"><div class="num">29</div><div class="label">Guru dalam pembagian tugas</div></div>
+<div class="card"><div class="num">11</div><div class="label">Kelas VII–IX</div></div>
+<div class="card"><div class="num">378</div><div class="label">Jam intra/minggu</div></div>
+<div class="card"><div class="num">394</div><div class="label">Total jam + tugas tambahan</div></div>
+</div>
+<div class="panel">
+<h2>🔎 Pencarian cepat</h2>
+<div class="toolbar">
+<input id="quickSearch" class="search" placeholder="Ketik nama guru, kode, kelas, atau mata pelajaran…">
+<button class="btn2" onclick="quickGo()">Cari</button>
+</div>
+<div class="hint">Contoh: <span class="kbd">Wahyu Abadi</span>, <span class="kbd">6</span>, <span class="kbd">9A</span>, atau <span class="kbd">Bahasa Inggris</span>.</div>
+</div>
+<div class="panel">
+<h2>Fitur aplikasi</h2>
+<div class="teacher-grid">
+<div class="card"><h3>👨‍🏫 Jadwal tiap guru</h3><div class="hint">Pilih guru dan tampilkan hari, jam, kelas, serta mata pelajaran.</div></div>
+<div class="card"><h3>🏫 Jadwal tiap kelas</h3><div class="hint">Pilih kelas VII–IX untuk melihat seluruh jadwal mingguan.</div></div>
+<div class="card"><h3>🔍 Pencarian cepat</h3><div class="hint">Cari berdasarkan nama, kode guru, kelas, atau mapel.</div></div>
+<div class="card"><h3>🖨️ Cetak / PDF</h3><div class="hint">Cetak tampilan guru, kelas, atau seluruh jadwal.</div></div>
+<div class="card"><h3>⚠️ Cek konflik</h3><div class="hint">Memeriksa apakah satu guru muncul di lebih dari satu kelas pada periode yang sama.</div></div>
+<div class="card"><h3>📊 Rekap jam</h3><div class="hint">Bandingkan jam terjadwal dengan pembagian tugas berdasarkan kode guru.</div></div>
+</div>
+</div>
+<div class="notice">Sumber data: <b>Jadwal Pembagian Tugas Semester Ganjil SMP Negeri 1 Limau Tahun Ajaran 2026/2027 (edisi 2)</b> dan <b>Pembagian Tugas Tahun Ajaran 2026/2027</b>. Data jadwal menggunakan kode guru pada dokumen sumber.</div>
+</section>
+
+<section id="guru" class="view">
+<div class="panel">
+<h2>👨‍🏫 Pencarian Jadwal Guru</h2>
+<div class="toolbar">
+<input id="guruSearch" class="search" placeholder="Cari nama / kode / mata pelajaran…" oninput="renderGuruList()">
+<select id="guruSelect" onchange="showTeacher()"></select>
+<button class="btn2 alt no-print" onclick="window.print()">🖨️ Cetak</button>
+</div>
+<div id="guruList" class="teacher-grid"></div>
+</div>
+<div id="teacherResult"></div>
+</section>
+
+<section id="kelas" class="view">
+<div class="panel">
+<h2>🏫 Jadwal Kelas</h2>
+<div class="toolbar">
+<select id="classSelect" onchange="showClass()"></select>
+<select id="classDay" onchange="showClass()"><option value="">Semua hari</option></select>
+<button class="btn2 alt no-print" onclick="window.print()">🖨️ Cetak</button>
+</div>
+<div id="classResult"></div>
+</div>
+</section>
+
+<section id="semua" class="view">
+<div class="panel">
+<h2>📅 Semua Jadwal</h2>
+<div class="toolbar">
+<input id="allSearch" class="search" placeholder="Cari guru, kelas, mapel…" oninput="renderAll()">
+<select id="allDay" onchange="renderAll()"></select>
+</div>
+<div id="allResult"></div>
+</div>
+</section>
+
+<section id="cek" class="view">
+<div class="panel">
+<h2>⚠️ Pemeriksaan Data</h2>
+<div id="checkResult"></div>
+</div>
+<div class="panel">
+<h2>📊 Rekap Jam Terjadwal</h2>
+<div id="hoursResult"></div>
+</div>
+</section>
+
+<section id="tugas" class="view">
+<div class="panel">
+<h2>📋 Pembagian Tugas Guru</h2>
+<div class="hint">Informasi ini diambil dari kolom <b>Keterangan</b> pada dokumen Pembagian Tugas Tahun Ajaran 2026/2027. Gunakan fitur ini untuk melihat mata pelajaran dan kelas yang diampu, lalu bandingkan dengan jadwal.</div>
+<div class="toolbar" style="margin-top:14px">
+<input id="tugasSearch" class="search" placeholder="Cari guru, kode, mata pelajaran, kelas, atau tugas tambahan…" oninput="renderTugas()">
+<select id="tugasFilter" onchange="renderTugas()"><option value="">Semua</option><option value="mengajar">Ada kelas/mengajar</option><option value="tambahan">Ada tugas tambahan</option><option value="kosong">Belum ada kelas tercantum</option></select>
+<button class="btn2 alt no-print" onclick="window.print()">🖨️ Cetak</button>
+</div>
+<div id="tugasResult"></div>
+</div>
+</section>
+
+</main>
+<footer>SMP Negeri 1 Limau • Smart Jadwal • Data mengikuti dokumen sumber yang diberikan.</footer>
+
+<script>
+const TEACHERS={"1": {"name": "Dra. Yali Hadiani", "subject": "Matematika"}, "2": {"name": "Eka Ariyanti, S.Pd.", "subject": "BK"}, "3": {"name": "Tugiyo", "subject": "Seni Budaya"}, "4": {"name": "Sopiah, S.Pd.", "subject": "BK"}, "5": {"name": "Rohmila, S.Pd.", "subject": "Ilmu Pengetahuan Sosial"}, "6": {"name": "Wahyu Abadi, S.Pd.", "subject": "Bahasa Inggris"}, "7": {"name": "Yanuar Rindrawansyah, S.Pd.", "subject": "Bahasa Indonesia"}, "8": {"name": "Rina Yunilawati, S.Pd.", "subject": "Bahasa Inggris"}, "9": {"name": "Rona Amnita, S.Pd.", "subject": "Bahasa Indonesia"}, "10": {"name": "Ahmad Muamar, S.Pd.I", "subject": "PAI"}, "11": {"name": "Gustiana, S.Pd.", "subject": "IPS"}, "12": {"name": "Fitri Indriani, S.Pd.", "subject": "IPA"}, "13": {"name": "Destiani, S.Pd.", "subject": "Bahasa Indonesia"}, "14": {"name": "Ana Munaroh, S.Pd.I", "subject": "PAI"}, "15": {"name": "Ira Widya", "subject": "BDL"}, "16": {"name": "Aveni Wathi, S.Pd.", "subject": ""}, "17": {"name": "Nurwahyuni", "subject": "Bahasa Indonesia"}, "18": {"name": "Ali Rifa'i, S.Pd.", "subject": "IPA"}, "19": {"name": "Musiroh, S.Kom.", "subject": "TIK"}, "20": {"name": "Drs. Saeun", "subject": "Matematika / IPA / PPKn"}, "21": {"name": "Bhika Anjar Prameswarih, S.Pd.", "subject": "PJOK"}, "22": {"name": "Arifin, S.Pd.", "subject": "Bahasa Inggris"}, "23": {"name": "Atriya Hudasari, S.S.I", "subject": "PPKn"}, "24": {"name": "Arif Ginanjar, S.Kom.", "subject": "TIK / PPKn / SBK"}, "25": {"name": "Siti Rahmawati, S.Pd.", "subject": "PPKn"}, "26": {"name": "Ratu Nur Anisa", "subject": "Bahasa Inggris"}, "27": {"name": "Medi Antoni", "subject": "Bahasa Lampung / SBK"}, "28": {"name": "Ade Armadi, S.Pd.", "subject": "Matematika"}, "29": {"name": "Novitasari, S.Sos.", "subject": "Bahasa Lampung / SBK"}};
+const CLASSES=["7A", "7B", "7C", "7D", "8A", "8B", "8C", "8D", "9A", "9B", "9C"];
+const SCHEDULE={"Senin": {"1": [null, null, null, null, null, null, null, null, null, null, null], "2": [10, 29, 11, 17, 19, 15, 7, 28, 18, 6, 5], "3": [18, 10, 11, 17, 19, 12, 7, 28, 13, 6, 5], "4": [26, 1, 19, 11, 28, 12, 29, 17, 13, 18, 10], "5": [26, 13, 28, 11, 15, 5, 19, 17, 6, 1, 18], "6": [29, 13, 28, 10, 15, 5, 19, 12, 6, 1, 18], "7": [19, 12, 13, 10, 17, 7, 28, 6, 1, 29, 15], "8": [19, 12, 13, 18, 17, 7, 28, 6, 1, 29, 15]}, "Selasa": {"1": [18, 27, 21, 11, 20, 8, 29, 17, 5, 15, 1], "2": [18, 27, 20, 11, 21, 8, 29, 17, 5, 15, 1], "3": [17, 1, 20, 8, 27, 28, 5, 15, 18, 21, 23], "4": [17, 1, 20, 8, 27, 28, 5, 15, 18, 21, 23], "5": [1, 8, 27, 17, 11, 5, 15, 28, 21, 18, 29], "6": [1, 8, 27, 20, 11, 5, 15, 23, 29, 18, 21], "7": [27, 21, 11, 20, 8, 7, 28, 5, 1, 23, 18], "8": [27, 23, 11, 20, 8, 7, 17, 5, 15, 1, 18]}, "Rabu": {"1": [18, 29, 13, 8, 14, 28, 7, 12, 1, 10, 21], "2": [18, 29, 13, 8, 14, 28, 7, 12, 1, 10, 21], "3": [17, 13, 24, 18, 28, 8, 12, 21, 6, 29, 1], "4": [17, 13, 24, 18, 28, 8, 12, 29, 6, 21, 1], "5": [1, 12, 28, 24, 17, 14, 8, 6, 13, 18, 29], "6": [1, 12, 10, 24, 17, 14, 8, 6, 13, 18, 29], "7": [29, 10, 8, 13, 12, 7, 28, 17, 21, 1, 6], "8": [29, 10, 8, 13, 12, 7, 28, 17, 21, 1, 6]}, "Kamis": {"1": [21, 23, 20, 13, 17, 24, 12, 19, 5, 9, 15], "2": [21, 23, 20, 13, 17, 24, 12, 19, 5, 9, 1], "3": [17, 12, 13, 27, 20, 19, 14, 21, 23, 24, 9], "4": [17, 1, 13, 19, 20, 12, 5, 21, 23, 6, 9], "5": [19, 1, 21, 20, 15, 12, 5, 14, 24, 6, 23], "6": [23, 19, 21, 20, 12, 27, 17, 14, 13, 5, 6], "7": [1, 19, 23, 24, 12, 21, 17, 15, 13, 5, 6]}, "Jumat": {"1": [null, null, null, null, null, null, null, null, null, null, null], "2": [27, 13, 24, 23, 8, 19, 14, 12, 29, 10, 18], "3": [11, 13, 23, 18, 8, 19, 14, 12, 29, 9, 24], "4": [11, 27, 23, 18, 12, 14, 19, 29, 10, 9, 24], "5": [10, 11, 8, 13, 14, 24, 12, 29, 18, 23, 9], "6": [10, 11, 8, 13, 19, 12, 24, 14, 18, 23, 9]}, "Sabtu": {"1": [23, 8, 19, 27, 11, 21, 24, 28, 15, 5, 10], "2": [23, 8, 19, 27, 11, 21, 24, 28, 15, 5, 10], "3": [21, 19, 27, 10, 28, 15, 8, 23, 24, 9, 5], "4": [11, 21, 10, 19, 28, 15, 8, 23, 24, 9, 5], "5": [11, 21, 10, 19, 27, 28, 15, 5, 23, 24, 9], "6": [26, 11, 28, 23, 21, 27, 7, 5, 10, 24, 9], "7": [26, 11, 28, 23, 21, 27, 7, 19, 10, 15, 24]}};
+const ASSIGNMENTS={"1": {"classes": "7A, 7B, 9A, 9B, 9C", "subjects": "Matematika", "extra": "—", "note": "7A MTK, 7B MTK, 9A MTK, 9B MTK, 9C MTK"}, "2": {"classes": "7A, 7B, 7C, 7D, 9C", "subjects": "BK", "extra": "Wali Kelas 9C", "note": "BK kelas 7A, 7B, 7C, 7D, 9C"}, "3": {"classes": "—", "subjects": "Seni Budaya", "extra": "—", "note": "Tidak tercantum kelas/mengajar pada pembagian tugas"}, "4": {"classes": "8A, 8B, 8C, 8D, 9A, 9B", "subjects": "BK", "extra": "Wali Kelas 8B", "note": "BK kelas 8A, 8B, 8C, 8D, 9A, 9B"}, "5": {"classes": "8B, 8C, 8D, 9A, 9B, 9C", "subjects": "Ilmu Pengetahuan Sosial", "extra": "Wali Kelas 8D", "note": "8B IPS, 8C IPS, 8D IPS, 9A IPS, 9B IPS, 9C IPS"}, "6": {"classes": "8D, 9A, 9B, 9C", "subjects": "Bahasa Inggris", "extra": "Waka Kurikulum", "note": "8D B.INGGRIS, 9A B.INGGRIS, 9B B.INGGRIS, 9C B.INGGRIS"}, "7": {"classes": "8B, 8C", "subjects": "Bahasa Indonesia", "extra": "Kepala Perpustakaan", "note": "8B B.INDONESIA, 8C B.INDONESIA"}, "8": {"classes": "7B, 7C, 7D, 8A, 8B, 8C", "subjects": "Bahasa Inggris", "extra": "Plt. Kepala Sekolah", "note": "7B B.INGGRIS, 7C B.INGGRIS, 7D B.INGGRIS, 8A B.INGGRIS, 8B B.INGGRIS, 8C B.INGGRIS"}, "9": {"classes": "9B, 9C", "subjects": "Bahasa Indonesia", "extra": "Waka Kesiswaan", "note": "9B B.INDONESIA, 9C B.INDONESIA"}, "10": {"classes": "7A, 7B, 7C, 7D, 9A, 9B, 9C", "subjects": "PAI", "extra": "Wali Kelas 7C", "note": "7A PAI, 7B PAI, 7C PAI, 7D PAI, 9A PAI, 9B PAI, 9C PAI"}, "11": {"classes": "7A, 7B, 7C, 7D, 8A", "subjects": "IPS", "extra": "Wali Kelas 7B; Kepala Lab IPA; Pembimbing Pembelajaran Berbasis Proyek Kelas 7ABCD, 9AB", "note": "7A IPS, 7B IPS, 7C IPS, 7D IPS, 8A IPS"}, "12": {"classes": "7B, 8A, 8B, 8C, 8D", "subjects": "IPA", "extra": "Pembina OSIS", "note": "7B IPA, 8A IPA, 8B IPA, 8C IPA, 8D IPA"}, "13": {"classes": "7B, 7C, 7D, 9A", "subjects": "Bahasa Indonesia", "extra": "Wali Kelas 9A", "note": "7B B.INDONESIA, 7C B.INDONESIA, 7D B.INDONESIA, 9A B.INDONESIA"}, "14": {"classes": "8A, 8B, 8C, 8D", "subjects": "PAI", "extra": "Waka Sarana & Prasarana", "note": "8A PAI, 8B PAI, 8C PAI, 8D PAI"}, "15": {"classes": "8A, 8B, 8C, 8D, 9A, 9B, 9C", "subjects": "BDL", "extra": "—", "note": "8A BDL, 8B BDL, 8C BDL, 8D BDL, 9A BDL, 9B BDL, 9C BDL"}, "16": {"classes": "—", "subjects": "—", "extra": "—", "note": "Tidak tercantum tugas/jam pada pembagian tugas"}, "17": {"classes": "7A, 7D, 8A, 8C, 8D", "subjects": "Bahasa Indonesia / PJOK", "extra": "Wali Kelas 7D; Pembimbing Pembelajaran Berbasis Proyek KLS 8ABCD, 9C", "note": "7A B.INDONESIA, 7D PJOK, 8A B.INDONESIA, 8C PJOK, 8D B.INDONESIA"}, "18": {"classes": "7A, 7D, 9A, 9B, 9C", "subjects": "IPA", "extra": "Wali Kelas 9B", "note": "7A IPA, 7D IPA, 9A IPA, 9B IPA, 9C IPA"}, "19": {"classes": "7A, 7B, 7C, 7D, 8A, 8B, 8C, 8D", "subjects": "TIK", "extra": "Wali Kelas 8C", "note": "7A TIK, 7B TIK, 7C TIK, 7D TIK, 8A TIK, 8B TIK, 8C TIK, 8D TIK"}, "20": {"classes": "7C, 7D, 8A", "subjects": "Matematika / IPA / PPKn", "extra": "—", "note": "7C IPA, 7D MTK, 8A PPKN"}, "21": {"classes": "7A, 7B, 8A, 8B, 8D, 9A, 9B, 9C", "subjects": "PJOK", "extra": "Wali Kelas 8A", "note": "7A PJOK, 7B PJOK, 8A PJOK, 8B PJOK, 8D PJOK, 9A PJOK, 9B PJOK, 9C PJOK"}, "22": {"classes": "—", "subjects": "Bahasa Inggris", "extra": "—", "note": "Tidak tercantum kelas/jam mengajar pada pembagian tugas"}, "23": {"classes": "7A, 7B, 7C, 7D, 8C, 8D, 9A, 9B, 9C", "subjects": "PPKn", "extra": "Wali Kelas 7A", "note": "7A PPKN, 7B PPKN, 7C PPKN, 7D PPKN, 8D PPKN, 9A PPKN, 9B PPKN, 9C PPKN"}, "24": {"classes": "7C, 7D, 8B, 8C, 9A, 9B, 9C", "subjects": "TIK / PPKn / SBK", "extra": "—", "note": "7C SBK, 7D SBK, 8B PPKN, 8C PPKN, 9A TIK, 9B TIK, 9C TIK"}, "25": {"classes": "—", "subjects": "PPKn", "extra": "—", "note": "Tidak tercantum kelas/jam mengajar pada pembagian tugas"}, "26": {"classes": "7A", "subjects": "Bahasa Inggris", "extra": "—", "note": "7A B.INGGRIS"}, "27": {"classes": "7A, 7B, 7C, 7D, 8A, 8B", "subjects": "Bahasa Lampung / SBK / BDL", "extra": "—", "note": "7A SBK, 7B SBK, 7C BDL, 7D BDL, 8A SBK, 8B SBK"}, "28": {"classes": "7C, 8A, 8B, 8C, 8D", "subjects": "Matematika", "extra": "—", "note": "7C MTK, 8A MTK, 8B MTK, 8C MTK, 8D MTK"}, "29": {"classes": "7A, 7B, 8C, 8D, 9A, 9B, 9C", "subjects": "Bahasa Lampung / SBK", "extra": "—", "note": "7A BDL, 7B BDL, 8C SBK, 8D SBK, 9A SBK, 9B SBK, 9C SBK"}};
+const TIMES={"Senin": {"1": "07.30–08.10", "2": "08.10–08.50", "3": "08.50–09.30", "4": "09.30–10.10", "5": "10.25–11.05", "6": "11.05–11.35", "7": "11.35–12.05", "8": "12.05–12.35"}, "Selasa": {"1": "07.30–08.10", "2": "08.10–08.50", "3": "08.50–09.30", "4": "09.30–10.10", "5": "10.25–11.05", "6": "11.05–11.35", "7": "11.35–12.05", "8": "12.05–12.35"}, "Rabu": {"1": "07.30–08.10", "2": "08.10–08.50", "3": "08.50–09.30", "4": "09.30–10.10", "5": "10.25–11.05", "6": "11.05–11.35", "7": "11.35–12.05", "8": "12.05–12.35"}, "Kamis": {"1": "07.30–08.10", "2": "08.10–08.50", "3": "08.50–09.30", "4": "09.30–10.10", "5": "10.25–11.15", "6": "11.15–11.55", "7": "11.55–12.35"}, "Jumat": {"1": "07.30–08.00", "2": "08.00–08.40", "3": "08.40–09.20", "4": "09.20–10.00", "5": "10.15–10.55", "6": "10.50–11.30"}, "Sabtu": {"1": "07.30–08.10", "2": "08.10–08.50", "3": "08.50–09.30", "4": "09.30–10.10", "5": "10.25–11.15", "6": "11.15–11.55", "7": "11.55–12.35"}};
+const DAY_ORDER=["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function teacher(id){return TEACHERS[String(id)]||{name:"Kode "+id,subject:""}}
+function lesson(id, cls, day, p){const t=teacher(id); return `<div class="lesson"><span class="badge">${esc(cls)}</span> <b>${esc(t.name)}</b><div class="hint">${esc(t.subject||"Mata pelajaran tidak tercantum")}</div></div>`}
+function periodsFor(day){return Object.keys(SCHEDULE[day]||{})}
+
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active")); b.classList.add("active");
+ document.querySelectorAll(".view").forEach(x=>x.classList.remove("active")); document.getElementById(b.dataset.view).classList.add("active");
+ if(b.dataset.view==="guru"){renderGuruList(); if(!document.getElementById("guruSelect").value) document.getElementById("guruSelect").value="1"; showTeacher();}
+ if(b.dataset.view==="kelas"){showClass();}
+ if(b.dataset.view==="semua"){renderAll();}
+ if(b.dataset.view==="cek"){renderChecks();}
+ if(b.dataset.view==="tugas"){renderTugas();}
+});
+
+
+function renderTugas(){
+ const q=(document.getElementById("tugasSearch").value||"").toLowerCase().trim();
+ const filter=document.getElementById("tugasFilter").value;
+ let arr=Object.entries(TEACHERS).filter(([id,t])=>{
+   const a=ASSIGNMENTS[id]||{};
+   const text=(id+" "+t.name+" "+t.subject+" "+a.classes+" "+a.subjects+" "+a.extra+" "+a.note).toLowerCase();
+   if(q && !text.includes(q)) return false;
+   if(filter==="mengajar" && (!a.classes || a.classes==="—")) return false;
+   if(filter==="tambahan" && (!a.extra || a.extra==="—")) return false;
+   if(filter==="kosong" && a.classes!=="—") return false;
+   return true;
+ });
+ let h='<div class="table-wrap"><table><thead><tr><th>Kode</th><th>Guru</th><th>Mapel pada Pembagian Tugas</th><th>Kelas yang Diampu</th><th>Tugas Tambahan</th><th>Keterangan</th></tr></thead><tbody>';
+ h+=arr.map(([id,t])=>{
+   const a=ASSIGNMENTS[id]||{};
+   return `<tr><td><b>${id}</b></td><td><b>${esc(t.name)}</b></td><td>${esc(a.subjects||t.subject||"—")}</td><td><span class="badge">${esc(a.classes||"—")}</span></td><td>${esc(a.extra||"—")}</td><td>${esc(a.note||"—")}</td></tr>`;
+ }).join("") || '<tr><td colspan="6" class="empty">Data tidak ditemukan.</td></tr>';
+ h+='</tbody></table></div>';
+ document.getElementById("tugasResult").innerHTML=h;
+}
+function teacherAssignmentHTML(id){
+ const a=ASSIGNMENTS[String(id)]||{};
+ return `<div class="panel" style="margin-top:14px">
+ <h3>📋 Pembagian Tugas</h3>
+ <div class="schedule-grid">
+  <div class="period"><b>Mata pelajaran</b><div style="margin-top:6px">${esc(a.subjects||"—")}</div></div>
+  <div class="period"><b>Kelas yang diampu</b><div style="margin-top:6px">${esc(a.classes||"—")}</div></div>
+  <div class="period"><b>Tugas tambahan</b><div style="margin-top:6px">${esc(a.extra||"—")}</div></div>
+  <div class="period"><b>Keterangan sumber</b><div style="margin-top:6px">${esc(a.note||"—")}</div></div>
+ </div></div>`;
+}
+
+function init() {
+ let gs=document.getElementById("guruSelect");
+ gs.innerHTML=Object.entries(TEACHERS).map(([id,t])=>`<option value="${id}">${id} — ${esc(t.name)}${t.subject?" • "+esc(t.subject):""}</option>`).join("");
+ document.getElementById("classSelect").innerHTML=CLASSES.map(c=>`<option>${c}</option>`).join("");
+ const opts='<option value="">Semua hari</option>'+DAY_ORDER.map(d=>`<option>${d}</option>`).join("");
+ document.getElementById("classDay").innerHTML=opts;
+ document.getElementById("allDay").innerHTML=opts;
+ renderGuruList(); showTeacher(); showClass(); renderAll(); renderTugas();
+}
+function renderGuruList(){
+ const q=document.getElementById("guruSearch").value.toLowerCase().trim();
+ const arr=Object.entries(TEACHERS).filter(([id,t])=>(id+" "+t.name+" "+t.subject).toLowerCase().includes(q));
+ document.getElementById("guruList").innerHTML=arr.map(([id,t])=>{
+   const n=countTeacher(id);
+   return `<div class="card teacher-card" onclick="selectTeacher('${id}')"><div class="code">KODE GURU ${id}</div><h3>${esc(t.name)}</h3><div class="subject">${esc(t.subject||"Belum ada mata pelajaran")}</div><div class="hint" style="margin-top:8px">${n} jam terjadwal</div></div>`;
+ }).join("")||'<div class="empty">Guru tidak ditemukan.</div>';
+}
+function selectTeacher(id){document.getElementById("guruSelect").value=id; showTeacher();}
+function countTeacher(id){let n=0; for(const d of DAY_ORDER) for(const p of periodsFor(d)) for(const x of SCHEDULE[d][p]) if(String(x)===String(id)) n++; return n;}
+function showTeacher(){
+ const id=document.getElementById("guruSelect").value, t=teacher(id), rows=[];
+ for(const d of DAY_ORDER) for(const p of periodsFor(d)){
+   const arr=SCHEDULE[d][p]; arr.forEach((x,i)=>{if(String(x)===String(id)) rows.push({day:d,p,time:TIMES[d][p],cls:CLASSES[i]})})
+ }
+ const byDay={}; rows.forEach(r=>(byDay[r.day]??=[]).push(r));
+ let html=`<div class="panel printable"><h2>${esc(t.name)} <span class="badge">Kode ${id}</span></h2><div class="hint">${esc(t.subject||"Mata pelajaran tidak tercantum")} • ${rows.length} jam terjadwal per minggu</div>`;
+ if(!rows.length) html+=`<div class="empty">Tidak ada jadwal mengajar yang tercantum untuk guru ini pada jadwal edisi 2.</div>`;
+ else {html+='<div class="schedule-grid" style="margin-top:14px">'; DAY_ORDER.forEach(d=>{if(byDay[d]) html+=`<div class="period"><div class="period-head"><span>${d}</span><span>${byDay[d].length} jam</span></div>`+byDay[d].map(r=>`<div class="lesson"><b>Jam ${r.p}</b> • ${r.time}</div><div class="lesson"><span class="badge">${r.cls}</span> ${esc(t.subject||"")}</div>`).join("")+'</div>';}); html+='</div>';}
+ html+='</div>'; html += teacherAssignmentHTML(id); document.getElementById("teacherResult").innerHTML=html;
+}
+function showClass(){
+ const cls=document.getElementById("classSelect").value, day=document.getElementById("classDay").value;
+ const ds=day?[day]:DAY_ORDER; let html=`<div class="panel printable"><h2>Kelas ${cls}</h2><div class="hint">Jadwal mingguan berdasarkan kolom kelas ${cls} pada dokumen sumber.</div><div class="schedule-grid" style="margin-top:14px">`;
+ ds.forEach(d=>{let found=false, block=`<div class="period"><div class="period-head"><span>${d}</span></div>`; for(const p of periodsFor(d)){
+   const idx=CLASSES.indexOf(cls), id=SCHEDULE[d][p][idx]; if(id){found=true; const t=teacher(id); block+=`<div class="lesson"><b>Jam ${p}</b> • ${TIMES[d][p]}<br><span class="badge">${esc(t.subject||"—")}</span> ${esc(t.name)} <span class="hint">(kode ${id})</span></div>`;}
+ } if(!found) block+='<div class="empty">Tidak ada pembelajaran pada periode ini.</div>'; block+='</div>'; html+=block;}); html+='</div></div>'; document.getElementById("classResult").innerHTML=html;
+}
+function renderAll(){
+ const q=document.getElementById("allSearch").value.toLowerCase().trim(), day=document.getElementById("allDay").value, ds=day?[day]:DAY_ORDER;
+ let rows=[];
+ ds.forEach(d=>periodsFor(d).forEach(p=>SCHEDULE[d][p].forEach((id,i)=>{
+   if(!id)return; const t=teacher(id), cls=CLASSES[i], s=(d+" "+TIMES[d][p]+" "+cls+" "+id+" "+t.name+" "+t.subject).toLowerCase();
+   if(!q||s.includes(q)) rows.push([d,p,TIMES[d][p],cls,id,t]);
+ })));
+ let html='<div class="table-wrap"><table><thead><tr><th>Hari</th><th>Jam</th><th>Waktu</th><th>Kelas</th><th>Kode</th><th>Guru</th><th>Mata Pelajaran</th></tr></thead><tbody>';
+ html+=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><b>${r[3]}</b></td><td>${r[4]}</td><td>${esc(r[5].name)}</td><td>${esc(r[5].subject||"—")}</td></tr>`).join("")||'<tr><td colspan="7" class="empty">Data tidak ditemukan.</td></tr>';
+ html+='</tbody></table></div>'; document.getElementById("allResult").innerHTML=html;
+}
+function renderChecks(){
+ let conflicts=[], total=0;
+ DAY_ORDER.forEach(d=>periodsFor(d).forEach(p=>{const c={}; SCHEDULE[d][p].forEach((id,i)=>{if(id){total++; (c[id]??=[]).push(CLASSES[i]);}}); Object.entries(c).forEach(([id,cs])=>{if(cs.length>1)conflicts.push(`${d} jam ${p} — ${teacher(id).name} (kode ${id}): ${cs.join(", ")}`)})}));
+ let scheduled=new Set(); DAY_ORDER.forEach(d=>periodsFor(d).forEach(p=>SCHEDULE[d][p].forEach(id=>id&&scheduled.add(String(id)))));
+ let noSchedule=Object.keys(TEACHERS).filter(id=>!scheduled.has(id));
+ document.getElementById("checkResult").innerHTML=`
+ <div class="cards"><div class="card"><div class="num">${total}</div><div class="label">Sel terisi di jadwal</div></div><div class="card"><div class="num">${conflicts.length}</div><div class="label">Konflik guru terdeteksi</div></div><div class="card"><div class="num">${noSchedule.length}</div><div class="label">Kode tanpa jadwal</div></div><div class="card"><div class="num">${CLASSES.length}</div><div class="label">Kelas</div></div></div>
+ ${conflicts.length?'<div class="notice"><b>Konflik ditemukan:</b><br>'+conflicts.map(esc).join("<br>")+'</div>':'<div class="notice" style="background:#eefbf5;border-color:#b7dfca">✅ Tidak ditemukan guru yang muncul pada dua kelas sekaligus dalam periode yang sama.</div>'}
+ <div class="panel"><h3>Kode guru tanpa jadwal pada dokumen edisi 2</h3><p>${noSchedule.length?noSchedule.map(id=>`<span class="badge">${id} — ${esc(teacher(id).name)}</span> `).join(""):"Tidak ada."}</p></div>`;
+ let h='<div class="table-wrap"><table><thead><tr><th>Kode</th><th>Guru</th><th>Mata Pelajaran</th><th>Jam terjadwal</th></tr></thead><tbody>';
+ Object.entries(TEACHERS).forEach(([id,t])=>h+=`<tr><td>${id}</td><td>${esc(t.name)}</td><td>${esc(t.subject||"—")}</td><td><b>${countTeacher(id)}</b></td></tr>`);
+ h+='</tbody></table></div>'; document.getElementById("hoursResult").innerHTML=h;
+}
+function quickGo(){
+ const q=document.getElementById("quickSearch").value.trim(); if(!q)return;
+ const low=q.toLowerCase(); let found=Object.entries(TEACHERS).find(([id,t])=>(id+" "+t.name+" "+t.subject).toLowerCase().includes(low));
+ if(found){document.querySelector('[data-view="guru"]').click(); document.getElementById("guruSelect").value=found[0]; showTeacher(); return;}
+ if(CLASSES.some(c=>c.toLowerCase()===low||c.toLowerCase().includes(low))){document.querySelector('[data-view="kelas"]').click(); document.getElementById("classSelect").value=CLASSES.find(c=>c.toLowerCase().includes(low)); showClass(); return;}
+ document.querySelector('[data-view="semua"]').click(); document.getElementById("allSearch").value=q; renderAll();
+}
+document.getElementById("quickSearch").addEventListener("keydown",e=>{if(e.key==="Enter")quickGo()}); init();
+</script>
+</body>
+</html>
